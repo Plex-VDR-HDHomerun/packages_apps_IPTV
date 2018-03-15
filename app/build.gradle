@@ -3,10 +3,10 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 21
-    buildToolsVersion "23.0.1"
+    buildToolsVersion '26.0.2'
 
     defaultConfig {
-        applicationId "at.pansy.iptv"
+        applicationId "com.android.iptv"
         minSdkVersion 21
         targetSdkVersion 21
         versionCode 1

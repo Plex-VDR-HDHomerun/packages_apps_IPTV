@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">IPTV Live Channels</string>
-    <string name="tv_input_label">IPTV Live Channels</string>
+    <string name="app_name">IPTV</string>
+    <string name="tv_input_label">IPTV</string>
 
-    <string name="iptv_ink_channel_url">http://tv.iptv.ink/iptv.ink</string>
-    <string name="iptv_ink_epg_url">http://epg.iptv.ink/iptv.epg.gz</string>
+    <string name="iptv_ink_channel_url">http://gitprojects.ddns.net/fios_iptv.m3u</string>
+    <string name="iptv_ink_epg_url">http://gitprojects.ddns.net/xmltv_default.xml</string>
     <string name="iptv_ink_logo_url">http://logo.iptv.ink/</string>
 
     <string name="tv_input_setup_add_channel">Add Channels</string>
