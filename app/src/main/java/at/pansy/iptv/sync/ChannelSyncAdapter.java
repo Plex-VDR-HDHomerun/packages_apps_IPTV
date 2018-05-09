@@ -1,23 +1,6 @@
-/*
- * Copyright 2015 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package at.pansy.iptv.sync;
 
 import android.accounts.Account;
-import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentProviderOperation;
 import android.content.ContentUris;
@@ -40,11 +23,8 @@ import at.pansy.iptv.util.IptvUtil;
 import at.pansy.iptv.util.TvContractUtil;
 import at.pansy.iptv.xmltv.XmlTvParser;
 
-/**
- * A SyncAdapter implementation which updates program info periodically.
- */
-public class SyncAdapter extends AbstractThreadedSyncAdapter {
-    public static final String TAG = "SyncAdapter";
+public class ChannelSyncAdapter {
+    public static final String TAG = "ChannelSyncAdapter";
 
     public static final String BUNDLE_KEY_INPUT_ID = "bundle_key_input_id";
     public static final String BUNDLE_KEY_CURRENT_PROGRAM_ONLY = "bundle_key_current_program_only";
@@ -56,12 +36,12 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     private final Context context;
 
-    public SyncAdapter(Context context, boolean autoInitialize) {
+    public ChannelSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
         this.context = context;
     }
 
-    public SyncAdapter(Context context, boolean autoInitialize, boolean allowParallelSyncs) {
+    public ChannelSyncAdapter(Context context, boolean autoInitialize, boolean allowParallelSyncs) {
         super(context, autoInitialize, allowParallelSyncs);
         this.context = context;
     }
@@ -71,26 +51,26 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
      */
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority,
-            ContentProviderClient provider, SyncResult syncResult) {
+                              ContentProviderClient provider, SyncResult syncResult) {
 
         Log.d(TAG, "onPerformSync(" + account + ", " + authority + ", " + extras + ")");
-        String inputId = extras.getString(SyncAdapter.BUNDLE_KEY_INPUT_ID);
+        String inputId = extras.getString(ChannelSyncAdapter.BUNDLE_KEY_INPUT_ID);
         if (inputId == null) {
             return;
         }
 
         XmlTvParser.TvListing listings = IptvUtil.getTvListings(context,
-                context.getString(R.string.iptv_ink_epg_url), IptvUtil.FORMAT_XMLTV);
+                context.getString(R.string.setup_root_server_m3u), IptvUtil.FORMAT_XMLTV);
 
         XmlTvParser.TvListing channelListings = IptvUtil.getTvListings(context,
-                context.getString(R.string.iptv_ink_channel_url), IptvUtil.FORMAT_M3U);
+                context.getString(R.string.setup_root_server_xmltv), IptvUtil.FORMAT_M3U);
         listings.setChannels(channelListings.channels);
 
 
         LongSparseArray<XmlTvParser.XmlTvChannel> channelMap = TvContractUtil.buildChannelMap(
                 context.getContentResolver(), inputId, listings.channels);
         boolean currentProgramOnly = extras.getBoolean(
-                SyncAdapter.BUNDLE_KEY_CURRENT_PROGRAM_ONLY, false);
+                ChannelSyncAdapter.BUNDLE_KEY_CURRENT_PROGRAM_ONLY, false);
         long startMs = System.currentTimeMillis();
         long endMs = startMs + FULL_SYNC_WINDOW_SEC * 1000;
         if (currentProgramOnly) {
@@ -117,7 +97,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
      * @param endTimeMs The end time of the range requested.
      */
     private List<Program> getPrograms(Uri channelUri, XmlTvParser.XmlTvChannel channel,
-            List<XmlTvParser.XmlTvProgram> programs, long startTimeMs, long endTimeMs) {
+                                      List<XmlTvParser.XmlTvProgram> programs, long startTimeMs, long endTimeMs) {
         if (startTimeMs > endTimeMs) {
             throw new IllegalArgumentException();
         }
@@ -134,20 +114,20 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 if (program.startTimeUtcMillis <= endTimeMs
                         && program.endTimeUtcMillis >= startTimeMs) {
                     programForGivenTime.add(new Program.Builder()
-                                    .setChannelId(ContentUris.parseId(channelUri))
-                                    .setTitle(program.title)
-                                    .setDescription(program.description)
-                                    .setContentRatings(XmlTvParser.xmlTvRatingToTvContentRating(
-                                            program.rating))
-                                    .setCanonicalGenres(program.category)
-                                    .setPosterArtUri(program.icon != null ? program.icon.src : null)
-                                    .setInternalProviderData(TvContractUtil.
-                                            convertVideoInfoToInternalProviderData(
-                                                    program.videoType,
-                                                    program.videoSrc != null ? program.videoSrc : channel.url))
-                                    .setStartTimeUtcMillis(program.startTimeUtcMillis)
-                                    .setEndTimeUtcMillis(program.endTimeUtcMillis)
-                                    .build()
+                            .setChannelId(ContentUris.parseId(channelUri))
+                            .setTitle(program.title)
+                            .setDescription(program.description)
+                            .setContentRatings(XmlTvParser.xmlTvRatingToTvContentRating(
+                                    program.rating))
+                            .setCanonicalGenres(program.category)
+                            .setPosterArtUri(program.icon != null ? program.icon.src : null)
+                            .setInternalProviderData(TvContractUtil.
+                                    convertVideoInfoToInternalProviderData(
+                                            program.videoType,
+                                            program.videoSrc != null ? program.videoSrc : channel.url))
+                            .setStartTimeUtcMillis(program.startTimeUtcMillis)
+                            .setEndTimeUtcMillis(program.endTimeUtcMillis)
+                            .build()
                     );
                 }
             }
@@ -173,22 +153,22 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 continue;
             }
             programForGivenTime.add(new Program.Builder()
-                            .setChannelId(ContentUris.parseId(channelUri))
-                            .setTitle(programInfo.title)
-                            .setDescription(programInfo.description)
-                            .setContentRatings(XmlTvParser.xmlTvRatingToTvContentRating(
-                                    programInfo.rating))
-                            .setCanonicalGenres(programInfo.category)
-                            .setPosterArtUri(programInfo.icon.src)
-                            // NOTE: {@code COLUMN_INTERNAL_PROVIDER_DATA} is a private field where
-                            // TvInputService can store anything it wants. Here, we store video type and
-                            // video URL so that TvInputService can play the video later with this field.
-                            .setInternalProviderData(TvContractUtil.convertVideoInfoToInternalProviderData(
-                                    programInfo.videoType,
-                                    programInfo.videoSrc != null ? programInfo.videoSrc : channel.url))
-                            .setStartTimeUtcMillis(programStartTimeMs)
-                            .setEndTimeUtcMillis(programEndTimeMs)
-                            .build()
+                    .setChannelId(ContentUris.parseId(channelUri))
+                    .setTitle(programInfo.title)
+                    .setDescription(programInfo.description)
+                    .setContentRatings(XmlTvParser.xmlTvRatingToTvContentRating(
+                            programInfo.rating))
+                    .setCanonicalGenres(programInfo.category)
+                    .setPosterArtUri(programInfo.icon.src)
+                    // NOTE: {@code COLUMN_INTERNAL_PROVIDER_DATA} is a private field where
+                    // TvInputService can store anything it wants. Here, we store video type and
+                    // video URL so that TvInputService can play the video later with this field.
+                    .setInternalProviderData(TvContractUtil.convertVideoInfoToInternalProviderData(
+                            programInfo.videoType,
+                            programInfo.videoSrc != null ? programInfo.videoSrc : channel.url))
+                    .setStartTimeUtcMillis(programStartTimeMs)
+                    .setEndTimeUtcMillis(programEndTimeMs)
+                    .build()
             );
             programStartTimeMs = programEndTimeMs;
         }

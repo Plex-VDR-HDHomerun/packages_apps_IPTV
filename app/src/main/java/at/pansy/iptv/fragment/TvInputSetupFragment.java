@@ -46,7 +46,7 @@ import at.pansy.iptv.util.TvContractUtil;
 import at.pansy.iptv.xmltv.XmlTvParser;
 
 /**
- * Fragment which shows a sample UI for registering channels and setting up SyncAdapter to
+ * Fragment which shows a sample UI for registering channels and setting up ChannelSyncAdapter to
  * provide program information in the background.
  */
 public class TvInputSetupFragment extends DetailsFragment {

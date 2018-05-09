@@ -1,9 +1,24 @@
 <resources>
     <string name="app_name">IPTV Live Channels</string>
     <string name="tv_input_label">IPTV Live Channels</string>
+    <string name="connect_unable">Unable to connect to server !</string>
+
+    <string name="setup_root_server_m3u">IPTV m3u server address</string>
+    <string name="setup_root_server_xmltv">IPTV m3u server address</string>
     <string name="iptv_ink_channel_url">http://plexlivetv.ddns.net/playlist/playlist.m3u</string>
     <string name="iptv_ink_epg_url">http://plexlivetv.ddns.net/playlist/iptvGuide.xml.gz</string>
     <string name="iptv_ink_logo_url">http://logo.iptv.ink/</string>
+    <string name="setup_root_language_title">Audio language</string>
+    <string name="setup_root_refreshrate_title">TV refresh rate</string>
+    <string name="setup_root_import_title">Import channels</string>
+    <string name="setup_root_import_desc">Refresh TV channels</string>
+    <string name="setup_root_title">IPTV Setup</string>
+    <string name="setup_root_desc">Setup IPTV and import channels</string>
+    <string name="setup_language_title">Audio Language</string>
+    <string name="setup_language_desc">Set your preferred channel audio language</string>
+    <string name="setup_refreshrate_title">TV refresh rate</string>
+    <string name="setup_refreshrate_desc">For a smooth TV playback the refresh rate of your TV should match your content. In Europe this is usually 50Hz. In the US and UK 60Hz.</string>
+    <string name="setup_import_title">Refreshing channels …</string>
 
     <string name="tv_input_setup_add_channel">Add Channels</string>
     <string name="tv_input_setup_update_channel">Update Channels</string>
