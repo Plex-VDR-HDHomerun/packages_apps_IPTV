@@ -25,10 +25,10 @@ import android.os.Bundle;
 import android.util.Log;
 
 import at.pansy.iptv.service.AccountService;
-import at.pansy.iptv.sync.SyncAdapter;
+import at.pansy.iptv.sync.ChannelSyncAdapter;
 
 /**
- * Static helper methods for working with the SyncAdapter framework.
+ * Static helper methods for working with the ChannelSyncAdapter framework.
  */
 public class SyncUtil {
     private static final String TAG = "SyncUtil";
@@ -45,17 +45,17 @@ public class SyncUtil {
         ContentResolver.setIsSyncable(account, CONTENT_AUTHORITY, 1);
         ContentResolver.setSyncAutomatically(account, CONTENT_AUTHORITY, true);
         Bundle bundle = new Bundle();
-        bundle.putString(SyncAdapter.BUNDLE_KEY_INPUT_ID, inputId);
+        bundle.putString(ChannelSyncAdapter.BUNDLE_KEY_INPUT_ID, inputId);
         ContentResolver.addPeriodicSync(account, CONTENT_AUTHORITY, bundle,
-                SyncAdapter.FULL_SYNC_FREQUENCY_SEC);
+                ChannelSyncAdapter.FULL_SYNC_FREQUENCY_SEC);
     }
 
     public static void requestSync(String inputId, boolean currentProgramOnly) {
         Bundle bundle = new Bundle();
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-        bundle.putString(SyncAdapter.BUNDLE_KEY_INPUT_ID, inputId);
-        bundle.putBoolean(SyncAdapter.BUNDLE_KEY_CURRENT_PROGRAM_ONLY, currentProgramOnly);
+        bundle.putString(ChannelSyncAdapter.BUNDLE_KEY_INPUT_ID, inputId);
+        bundle.putBoolean(ChannelSyncAdapter.BUNDLE_KEY_CURRENT_PROGRAM_ONLY, currentProgramOnly);
         ContentResolver.requestSync(AccountService.getAccount(ACCOUNT_TYPE), CONTENT_AUTHORITY,
                 bundle);
     }

@@ -20,21 +20,21 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
-import at.pansy.iptv.sync.SyncAdapter;
+import at.pansy.iptv.sync.ChannelSyncAdapter;
 
 /**
- * Service which provides the SyncAdapter implementation to the framework on request.
+ * Service which provides the ChannelSyncAdapter implementation to the framework on request.
  */
 public class SyncService extends Service {
     private static final Object syncAdapterLock = new Object();
-    private static SyncAdapter syncAdapter = null;
+    private static ChannelSyncAdapter syncAdapter = null;
 
     @Override
     public void onCreate() {
         super.onCreate();
         synchronized (syncAdapterLock) {
             if (syncAdapter == null) {
-                syncAdapter = new SyncAdapter(getApplicationContext(), true);
+                syncAdapter = new ChannelSyncAdapter(getApplicationContext(), true);
             }
         }
     }
