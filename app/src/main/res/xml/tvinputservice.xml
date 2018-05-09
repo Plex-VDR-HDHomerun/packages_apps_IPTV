@@ -14,4 +14,5 @@
      limitations under the License.
 -->
 <tv-input xmlns:android="http://schemas.android.com/apk/res/android"
-    android:setupActivity="@string/tv_input_activity"/>
+    android:settingsActivity="at.pansy.iptv.activity.TvInputSetupActivity"
+    android:setupActivity="at.pansy.iptv.activity.TvInputSetupActivity" />

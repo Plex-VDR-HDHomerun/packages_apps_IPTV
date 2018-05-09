@@ -190,7 +190,7 @@ public class TvInputSetupFragment extends DetailsFragment {
                         return;
                     }
 
-                    Account account = AccountService.getAccount(SyncUtil.ACCOUNT_TYPE);
+                    Account account = AccountService.getAccount(SyncUtil.ACCOUNT_TYPE););
                     boolean syncActive = ContentResolver.isSyncActive(account,
                             TvContract.AUTHORITY);
                     boolean syncPending = ContentResolver.isSyncPending(account,

@@ -31,11 +31,9 @@ import at.pansy.iptv.sync.SyncAdapter;
  * Static helper methods for working with the SyncAdapter framework.
  */
 public class SyncUtil {
-
-    public static final String ACCOUNT_TYPE = "at.pansy.iptv.account";
-
     private static final String TAG = "SyncUtil";
     private static final String CONTENT_AUTHORITY = TvContract.AUTHORITY;
+    public static final String ACCOUNT_TYPE = "com.example.android.sampletvinput.account";
 
     public static void setUpPeriodicSync(Context context, String inputId) {
         Account account = AccountService.getAccount(ACCOUNT_TYPE);
