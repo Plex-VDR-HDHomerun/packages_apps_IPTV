@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="at.pansy.iptv" >
 
+
     <!-- Required to play internet-based streaming contents. -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <!-- Required to register a SyncStatusObserver. -->
@@ -55,23 +56,6 @@
             </intent-filter>
             <meta-data android:name="android.media.tv.input"
                 android:resource="@xml/tvinputservice" />
-        </service>
-
-        <service android:name=".service.SyncService"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.content.SyncAdapter" />
-            </intent-filter>
-            <meta-data android:name="android.content.SyncAdapter"
-                android:resource="@xml/syncadapter" />
-        </service>
-
-        <service android:name=".service.AccountService">
-            <intent-filter>
-                <action android:name="android.accounts.AccountAuthenticator" />
-            </intent-filter>
-            <meta-data android:name="android.accounts.AccountAuthenticator"
-                android:resource="@xml/authenticator" />
         </service>
 
     </application>

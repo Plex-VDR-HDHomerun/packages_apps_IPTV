@@ -27,15 +27,10 @@ import android.os.Bundle;
 import android.os.IBinder;
 
 
-/**
- * Dummy account service for SyncAdapter. Note that this does nothing because this input uses a feed
- * which does not require any authentication.
- */
 public class AccountService extends Service {
-
-    public static final String ACCOUNT_NAME = "IPTV Live Channels";
-
-    private Authenticator authenticator;
+    private static final String TAG = "TvAccountService";
+    private DummyAuthenticator mAuthenticator;
+    public static final String ACCOUNT_NAME = "TvAccount";
 
     public static Account getAccount(String accountType) {
         return new Account(ACCOUNT_NAME, accountType);
@@ -43,44 +38,40 @@ public class AccountService extends Service {
 
     @Override
     public void onCreate() {
-        authenticator = new Authenticator(this);
+        mAuthenticator = new DummyAuthenticator(this);
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        return authenticator.getIBinder();
+        return mAuthenticator.getIBinder();
     }
 
-    /**
-     * Dummy Authenticator used in {@link SyncAdapter}. This does nothing for all the operations
-     * since channel/program feed does not require any authentication.
-     */
-    public class Authenticator extends AbstractAccountAuthenticator {
-        public Authenticator(Context context) {
+    public class DummyAuthenticator extends AbstractAccountAuthenticator {
+        public DummyAuthenticator(Context context) {
             super(context);
         }
 
         @Override
         public Bundle editProperties(AccountAuthenticatorResponse accountAuthenticatorResponse,
-                String s) {
+                                     String s) {
             throw new UnsupportedOperationException();
         }
 
         @Override
         public Bundle addAccount(AccountAuthenticatorResponse accountAuthenticatorResponse,
-                String s, String s2, String[] strings, Bundle bundle) throws NetworkErrorException {
+                                 String s, String s2, String[] strings, Bundle bundle) throws NetworkErrorException {
             return null;
         }
 
         @Override
         public Bundle confirmCredentials(AccountAuthenticatorResponse accountAuthenticatorResponse,
-                Account account, Bundle bundle) throws NetworkErrorException {
+                                         Account account, Bundle bundle) throws NetworkErrorException {
             return null;
         }
 
         @Override
         public Bundle getAuthToken(AccountAuthenticatorResponse accountAuthenticatorResponse,
-                Account account, String s, Bundle bundle) throws NetworkErrorException {
+                                   Account account, String s, Bundle bundle) throws NetworkErrorException {
             throw new UnsupportedOperationException();
         }
 
@@ -91,15 +82,17 @@ public class AccountService extends Service {
 
         @Override
         public Bundle updateCredentials(AccountAuthenticatorResponse accountAuthenticatorResponse,
-                Account account, String s, Bundle bundle) throws NetworkErrorException {
+                                        Account account, String s, Bundle bundle) throws NetworkErrorException {
             throw new UnsupportedOperationException();
         }
 
         @Override
         public Bundle hasFeatures(AccountAuthenticatorResponse accountAuthenticatorResponse,
-                Account account, String[] strings) throws NetworkErrorException {
+                                  Account account, String[] strings) throws NetworkErrorException {
             throw new UnsupportedOperationException();
         }
     }
+
 }
+
 
