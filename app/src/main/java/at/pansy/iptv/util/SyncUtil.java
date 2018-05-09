@@ -33,7 +33,7 @@ import at.pansy.iptv.sync.SyncAdapter;
 public class SyncUtil {
     private static final String TAG = "SyncUtil";
     private static final String CONTENT_AUTHORITY = TvContract.AUTHORITY;
-    public static final String ACCOUNT_TYPE = "com.example.android.sampletvinput.account";
+    public static final String ACCOUNT_TYPE = "at.pansy.iptv.account";
 
     public static void setUpPeriodicSync(Context context, String inputId) {
         Account account = AccountService.getAccount(ACCOUNT_TYPE);
